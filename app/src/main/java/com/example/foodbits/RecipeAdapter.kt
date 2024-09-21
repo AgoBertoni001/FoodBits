@@ -1,5 +1,14 @@
 package com.example.foodbits
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+
+
 class RecipeAdapter(private val recipeList: List<Recipe>) :
     RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
@@ -23,7 +32,6 @@ class RecipeAdapter(private val recipeList: List<Recipe>) :
         Glide.with(holder.recipeImage.context).load(recipe.imageUrl).into(holder.recipeImage)
     }
 
-    override fun getItemCount(): Int {
-        return recipeList.size
-    }
+    override fun getItemCount() = recipeList.size
+
 }

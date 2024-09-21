@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
+    kotlin("kapt")
 }
 
 android {
@@ -36,27 +38,33 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.recyclerview)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
-    implementation(libs.androidx.recyclerview)
     implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.firebase.analytics)
-    implementation (libs.firebase.storage)
-    implementation (libs.firebase.firestore)
-    implementation (libs.com.google.android.material.material.v190.x2)
-    implementation (libs.androidx.constraintlayout)
-    implementation (libs.androidx.appcompat.v161)
-    implementation (libs.androidx.drawerlayout)
-    implementation (libs.recyclerview)
-    implementation (libs.androidx.core.ktx.v1101)
-    implementation (libs.firebase.auth)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.bom.v3280)
+    implementation(libs.firebase.firestore)
+
+
+    // RecyclerView
+    implementation(libs.androidx.recyclerview)
+
+    // Glide para cargar imágenes
+    implementation(libs.glide)
+    kapt(libs.compiler)
 }
+
+apply(plugin = "com.google.gms.google-services")

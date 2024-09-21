@@ -4,14 +4,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateRecipe">
+    tools:context=".CreateRecipe"
+    >
 
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background=""
+        android:background="@color/design_default_color_background"
         android:contentDescription="@android:string/fingerprint_icon_content_description"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         tools:ignore="MissingConstraints" />
@@ -43,34 +44,40 @@
             android:hint="Descripción de la receta"
             android:minHeight="48dp" />
 
-        <RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredients_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:layout_height="68dp"
+            android:layout_margin="16dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_ingredient" />
 
         <Button
             android:id="@+id/add_ingredient"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background=""
-            android:minHeight="48dp"
-            android:text="Añadir ingrediente"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/add_ingredient"
             android:textColor="#E85C0D" />
 
-        <RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/steps_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:layout_height="63dp"
+            android:layout_margin="16dp"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_step" />
 
         <Button
             android:id="@+id/add_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background=""
+            android:backgroundTint="@color/white"
             android:minHeight="48dp"
-            android:text="Añadir paso"
+            android:text="@string/add_step"
             android:textColor="#E85C0D" />
 
         <Button
@@ -79,12 +86,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="?attr/selectableItemBackground"
-            android:text="Añadir imagen"
-            android:textSize="16sp"
-            android:drawableLeft="@android:drawable/ic_menu_gallery"
+            android:drawableStart="@android:drawable/ic_menu_gallery"
             android:drawablePadding="8dp"
+            android:text="@string/add_image"
             android:textColor="#E85C0D"
-        android:contentDescription="@string/upload_image" />
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
         <RadioGroup
             android:id="@+id/visibility_group"
@@ -94,7 +101,7 @@
             <RadioButton
                 android:id="@+id/public_option"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minHeight="48dp"
                 android:text="Público" />
 

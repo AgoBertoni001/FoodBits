@@ -2,4 +2,13 @@
     <string name="app_name">FoodBits</string>
     <string name="navigation_drawer_open">Abrir menú</string>
     <string name="navigation_drawer_close">Cerrar menú</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="add_step">Add Step</string>
+    <string name="add_image">Add Image</string>
+    <string name="perfil">Perfil</string>
+    <string name="inicio">Inicio</string>
+    <string name="nueva_receta">Nueva receta</string>
+    <string name="ingrediente">Ingrediente</string>
+    <string name="paso">Paso</string>
 </resources>

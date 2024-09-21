@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Permisos -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -14,30 +19,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodBits"
         tools:targetApi="31">
+
+        <!-- LogIn Activity es la pantalla principal -->
         <activity
             android:name=".LogIn"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"> <!-- Cambiado a true para permitir el acceso externo si es necesario -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CreateRecipe"
-            android:exported="false" />
-        <activity
-            android:name=".Profile"
-            android:exported="false" />
+
+        <!-- Home Activity (a la que rediriges tras iniciar sesión) -->
         <activity
             android:name=".Home"
             android:exported="false" />
+
+        <!-- Otras actividades de la aplicación -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CreateRecipe"
+            android:exported="false" />
+
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+
         <activity
             android:name=".SignUp"
             android:exported="false" />
+
     </application>
 
 </manifest>
