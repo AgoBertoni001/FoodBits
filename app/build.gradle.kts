@@ -65,6 +65,13 @@ dependencies {
     // Glide para cargar imágenes
     implementation(libs.glide)
     kapt(libs.compiler)
+
+    dependencies {
+        implementation(libs.retrofit)
+        implementation(libs.converter.gson)
+        implementation(libs.gson)
+    }
+
 }
 
 apply(plugin = "com.google.gms.google-services")

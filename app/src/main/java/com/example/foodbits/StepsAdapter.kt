@@ -29,7 +29,7 @@ class StepsAdapter(private var steps: MutableList<String>) :
 
     // Método para agregar un paso a la lista
     fun addStep(step: String) {
-        steps.add(step)
+        steps.add(step)  // Esto ahora funcionará
         notifyItemInserted(steps.size - 1)
     }
 
@@ -37,4 +37,3 @@ class StepsAdapter(private var steps: MutableList<String>) :
         return steps
     }
 }
-

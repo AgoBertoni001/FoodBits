@@ -2,10 +2,12 @@
 agp = "8.5.1"
 appcompatVersion = "1.6.1"
 comGoogleAndroidMaterialMaterial = "1.9.0"
+converterGson = "2.9.0"
 coreKtxVersion = "1.10.1"
 drawerlayout = "1.2.0"
 firebaseBomVersion = "32.8.0"
 glide = "4.14.2"
+gson = "2.10.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -22,6 +24,7 @@ firebaseAuthKtxVersion = "23.0.0"
 firebaseBom = "32.7.3"
 firebaseFirestoreKtx = "25.1.0"
 firebaseStorageKtx = "21.0.0"
+retrofit = "2.9.0"
 
 [libraries]
 androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
@@ -30,9 +33,11 @@ androidx-core-ktx-v1101 = { module = "androidx.core:core-ktx", version.ref = "co
 androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
 com-google-android-material-material-v190-x2 = { module = "com.google.android.material:material", version.ref = "comGoogleAndroidMaterialMaterial" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-bom-v3280 = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -48,6 +53,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtxVersion"}
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

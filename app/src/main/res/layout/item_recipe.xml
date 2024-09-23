@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="8dp"
+        android:layout_margin="0dp"
         tools:ignore="MissingConstraints">
 
         <TextView
@@ -17,20 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Nombre de la receta" />
-
-        <TextView
-            android:id="@+id/recipe_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Descripción de la receta" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/recipe_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:layout_marginTop="8dp"/>
+            android:visibility="gone" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

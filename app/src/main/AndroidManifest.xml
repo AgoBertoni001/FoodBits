@@ -36,6 +36,8 @@
             android:exported="false" />
 
         <!-- Otras actividades de la aplicación -->
+        <activity
+            android:name=".RecipeDetailActivity"/>
 
         <activity
             android:name=".MainActivity"
@@ -52,6 +54,7 @@
         <activity
             android:name=".SignUp"
             android:exported="false" />
+
 
     </application>
 

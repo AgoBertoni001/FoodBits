@@ -1,36 +1,37 @@
 package com.example.foodbits
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class Profile : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recipeAdapter: RecipeAdapter
-    private lateinit var recipeList: ArrayList<Recipe>
+    private var recipesList = ArrayList<Pair<String, Recipe>>()  // Cambiar la lista a usar Pair<String, Recipe>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_profile)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
+        // Inicializar RecyclerView desde el layout
+        recyclerView = findViewById(R.id.recipes_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recipeList = ArrayList()
-        recipeAdapter = RecipeAdapter(recipeList)
+
+        // Pasar la función onClick al RecipeAdapter
+        recipeAdapter = RecipeAdapter(recipesList) { recipeId, recipe ->
+            // Intent para abrir los detalles de la receta seleccionada
+            val intent = Intent(this, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipeId)  // Pasar el ID de la receta
+            intent.putExtra("RECIPE", recipe)  // Pasar la receta completa si es necesario
+            startActivity(intent)
+        }
         recyclerView.adapter = recipeAdapter
 
+        // Cargar recetas del usuario
         loadUserRecipes()
     }
 
@@ -42,11 +43,13 @@ class Profile : AppCompatActivity() {
             .whereEqualTo("userId", currentUser)
             .get()
             .addOnSuccessListener { result ->
+                recipesList.clear()  // Limpiar la lista antes de agregar nuevas recetas
                 for (document in result) {
                     val recipe = document.toObject(Recipe::class.java)
-                    recipeList.add(recipe)
+                    val recipeId = document.id  // Obtener el ID del documento
+                    recipesList.add(Pair(recipeId, recipe))  // Agregar el Pair<String, Recipe> a la lista
                 }
-                recipeAdapter.notifyDataSetChanged()
+                recipeAdapter.notifyDataSetChanged()  // Notificar al adaptador que los datos cambiaron
             }
             .addOnFailureListener {
                 // Manejar errores
