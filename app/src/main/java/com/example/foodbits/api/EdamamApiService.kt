@@ -9,7 +9,7 @@ interface EdamamApiService {
     @GET("search")
     fun getRecipes(
         @Query("q") query: String,
-        @Query("app_id") appId: String,
-        @Query("app_key") appKey: String
+        @Query("app_id") appId: String="6cf6e756",
+        @Query("app_key") appKey: String= "88bec5b3cdb41583b69d1eaae032d51b"
     ): Call<RecipeResponse>
 }

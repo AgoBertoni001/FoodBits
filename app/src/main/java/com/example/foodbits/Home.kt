@@ -12,21 +12,22 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodbits.CreateRecipe
-import com.example.foodbits.RecipeDetailActivity
+import com.example.foodbits.api.RetrofitClient
+import com.example.foodbits.models.RecipeResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var recipesRecyclerView: RecyclerView
     private lateinit var recipesAdapter: RecipeAdapter
-    private var recipesList = mutableListOf<Pair<String, Recipe>>()
+    private var recipesList = mutableListOf<Pair<String, Recipe>>()  // Lista combinada de recetas
     private val db = FirebaseFirestore.getInstance()
-
 
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +54,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_home -> {
-                    // Navegar a Home
-                    true
-                }
+                R.id.action_home -> true
                 R.id.action_create_recipe -> {
                     startActivity(Intent(this, CreateRecipe::class.java))
                     true
@@ -69,22 +67,50 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
         }
 
-
+        // Para mostrar las recetas
         recipesRecyclerView = findViewById(R.id.recipes_recycler_view)
         recipesAdapter = RecipeAdapter(recipesList) { recipeId, recipe ->
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipeId)  // Pasar el id de la receta seleccionada
             startActivity(intent)
         }
-
-
         recipesRecyclerView.layoutManager = LinearLayoutManager(this)
         recipesRecyclerView.adapter = recipesAdapter
 
+        // Cargar las recetas públicas desde Firebase
         loadPublicRecipes()
 
+        // Cargar recetas desde la API de EDAMAM
+        fetchRecipesFromApi("pollo")
     }
 
+    // Función que llama a la API de EDAMAM para obtener recetas
+    private fun fetchRecipesFromApi(query: String) {
+        RetrofitClient.instance.getRecipes(query).enqueue(object : Callback<RecipeResponse> {
+            override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("API Response", "Respuesta exitosa: ${response.body()}")
+                    val apiRecipes = response.body()?.hits ?: emptyList()
+
+                    // Mapeamos las recetas de la API a tu modelo local de recetas
+                    val mappedRecipes = apiRecipes.map { hit ->
+                        val recipe = mapApiRecipeToLocalRecipe(hit.recipe)
+                        Pair(recipe.id, recipe)
+                    }
+
+                    // Añadir recetas de la API a la lista combinada
+                    recipesList.addAll(mappedRecipes)
+                    recipesAdapter.notifyDataSetChanged()
+                } else {
+                    Log.e("API Error", "Código de error: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
+                Log.e("API Failure", "Error: ${t.message}")
+            }
+        })
+    }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -104,9 +130,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_home -> {
-                // No es necesario reiniciar Home
-            }
+            R.id.action_home -> { /* No es necesario reiniciar Home */ }
             R.id.action_create_recipe -> {
                 startActivity(Intent(this, CreateRecipe::class.java))
             }
@@ -119,8 +143,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         return true
     }
 
-
-
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -129,16 +151,17 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
+    // Carga las recetas públicas desde Firebase y combina con las de la API
     private fun loadPublicRecipes() {
         db.collection("recipes")
             .whereEqualTo("visibility", "PUBLIC")  // Filtra solo recetas públicas
             .get()
             .addOnSuccessListener { result ->
-                recipesList.clear()
+                recipesList.clear()  // Limpiar la lista antes de añadir nuevas recetas
                 for (document in result) {
                     val recipe = document.toObject(Recipe::class.java)
                     val recipeId = document.id  // Obtiene el ID del documento
-                    recipesList.add(Pair(recipeId, recipe)) // Guarda el ID y la receta como un par
+                    recipesList.add(Pair(recipeId, recipe))  // Añadir receta de Firebase
                 }
                 recipesAdapter.notifyDataSetChanged()
             }
@@ -147,4 +170,10 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
     }
 
+    // Función para actualizar las recetas en el RecyclerView
+    private fun RecipeAdapter.updateRecipes(recipes: List<Pair<String, Recipe>>) {
+        recipesList.clear()
+        recipesList.addAll(recipes)
+        notifyDataSetChanged()
+    }
 }
